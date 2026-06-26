@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchTokenStats, formatUsd, TokenStats } from "@/lib/dexscreener";
+import type { TokenStats as TokenStatsData } from "@/lib/dexscreener";
+import { fetchTokenStats, formatUsd } from "@/lib/dexscreener";
 import { TOKEN_MINT, TOKEN_SYMBOL } from "@/lib/constants";
 
-const MOCK: TokenStats = {
+const MOCK: TokenStatsData = {
   priceUsd: "0.00004200",
   priceChange24h: 12.45,
   volume24h: 824_300,
@@ -93,7 +94,7 @@ function StatCard({ icon, label, value, sub, up, accentClass, delay = 0 }: CardP
 }
 
 export default function TokenStats() {
-  const [stats, setStats] = useState<TokenStats>(MOCK);
+  const [stats, setStats] = useState<TokenStatsData>(MOCK);
 
   const load = async () => {
     if (isMockMint) return;
