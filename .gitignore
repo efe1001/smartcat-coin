@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+
+# Environment & credentials — NEVER push these
+.env
+.env.local
+.env*.local
+credentials.txt
+
+# Misc
+.DS_Store
+*.pem
+npm-debug.log*

@@ -1,0 +1,171 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #1e293b transparent;
+}
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+
+body {
+  background-color: #04080f;
+  background-image:
+    radial-gradient(ellipse at 15% 50%, rgba(249,115,22,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 10%, rgba(168,85,247,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 90%, rgba(34,211,238,0.04) 0%, transparent 55%);
+  color: #f1f5f9;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif;
+  min-height: 100vh;
+}
+
+/* ── Animations ─────────────────────────── */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-glow {
+  0%,100% { box-shadow: 0 0 20px rgba(249,115,22,0.25); }
+  50%      { box-shadow: 0 0 45px rgba(249,115,22,0.55); }
+}
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+@keyframes shimmer {
+  0%   { background-position: -400% 0; }
+  100% { background-position: 400% 0; }
+}
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-5px); }
+}
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-marquee     { animation: marquee 35s linear infinite; }
+.animate-fadeInUp    { animation: fadeInUp 0.6s ease forwards; }
+.animate-pulse-glow  { animation: pulse-glow 2.5s ease-in-out infinite; }
+.animate-spin-slow   { animation: spin-slow 8s linear infinite; }
+.animate-float       { animation: float 3s ease-in-out infinite; }
+.animate-count-up    { animation: count-up 0.4s ease forwards; }
+
+/* ── Utilities ──────────────────────────── */
+.glass {
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.glass-card {
+  background: rgba(255,255,255,0.02);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.07);
+  transition: border-color 0.2s, background 0.2s;
+}
+.glass-card:hover {
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(255,255,255,0.12);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #fb923c 0%, #f97316 40%, #fdba74 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.gradient-text-purple {
+  background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glow-orange { box-shadow: 0 0 30px rgba(249,115,22,0.3); }
+.glow-purple { box-shadow: 0 0 30px rgba(168,85,247,0.3); }
+
+/* Gradient border effect */
+.grad-border {
+  position: relative;
+  isolation: isolate;
+}
+.grad-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(249,115,22,0.4), rgba(168,85,247,0.2), transparent 60%);
+  z-index: -1;
+}
+
+/* ── Buttons ────────────────────────────── */
+.btn-swap {
+  background: linear-gradient(135deg, #f97316 0%, #ea6c0a 100%);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btn-swap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.btn-swap:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(249,115,22,0.45); }
+.btn-swap:hover::before { opacity: 1; }
+.btn-swap:active { transform: translateY(0); }
+.btn-swap:disabled { opacity: 0.45; transform: none; box-shadow: none; }
+
+.btn-sell {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btn-sell:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(239,68,68,0.4); }
+.btn-sell:disabled { opacity: 0.45; transform: none; box-shadow: none; }
+
+/* Input styles */
+.swap-input {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: border-color 0.2s, background 0.2s;
+  outline: none;
+}
+.swap-input:focus {
+  border-color: rgba(249,115,22,0.5);
+  background: rgba(255,255,255,0.06);
+  box-shadow: 0 0 0 3px rgba(249,115,22,0.1);
+}
+
+/* Shimmer skeleton */
+.skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
+  background-size: 400% 100%;
+  animation: shimmer 1.8s infinite;
+}
+
+/* Wallet adapter override */
+.wallet-adapter-button {
+  background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
+  border-radius: 0.75rem !important;
+  font-size: 0.8rem !important;
+  height: 38px !important;
+  padding: 0 14px !important;
+  transition: all 0.2s !important;
+  font-weight: 600 !important;
+}
+.wallet-adapter-button:hover {
+  background: linear-gradient(135deg, #6d28d9, #5b21b6) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 20px rgba(109,40,217,0.4) !important;
+}
