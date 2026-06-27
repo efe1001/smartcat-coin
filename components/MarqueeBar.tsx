@@ -1,21 +1,79 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { TOKEN_SYMBOL } from "@/lib/constants";
 
-const ITEMS = [
-  { label: `${TOKEN_SYMBOL}/SOL`, value: "$0.0000420", change: "+12.45%", up: true },
-  { label: "SOL/USD",             value: "$168.32",    change: "+3.21%",  up: true },
-  { label: "BTC/USD",             value: "$97,420",    change: "-0.84%",  up: false },
-  { label: "ETH/USD",             value: "$3,812",     change: "+1.23%",  up: true },
-  { label: `${TOKEN_SYMBOL} Holders`, value: "2,847",  change: "+124 today", up: true },
-  { label: "24h Volume",          value: "$824K",      change: "+31%",    up: true },
-  { label: "Liquidity",           value: "$412K",      change: "Locked",  up: true },
-  { label: "Market Cap",          value: "$4.2M",      change: "+15%",    up: true },
-];
+interface PriceData {
+  usd: number;
+  usd_24h_change: number;
+}
 
-const DOUBLED = [...ITEMS, ...ITEMS];
+interface Prices {
+  solana?: PriceData | null;
+  bitcoin?: PriceData | null;
+  ethereum?: PriceData | null;
+}
+
+function fmt(n: number, decimals = 2) {
+  return n >= 1000 ? n.toLocaleString("en-US", { maximumFractionDigits: 0 }) : n.toFixed(decimals);
+}
+
+function changeLabel(pct: number) {
+  return `${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%`;
+}
 
 export default function MarqueeBar() {
+  const [prices, setPrices] = useState<Prices>({});
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await fetch("/api/prices");
+        if (res.ok) setPrices(await res.json());
+      } catch { /* silent — show static fallback */ }
+    }
+    load();
+    const t = setInterval(load, 60_000);
+    return () => clearInterval(t);
+  }, []);
+
+  const sol = prices.solana;
+  const btc = prices.bitcoin;
+  const eth = prices.ethereum;
+
+  const ITEMS = [
+    {
+      label: `${TOKEN_SYMBOL}/SOL`,
+      value: "$0.0000420",
+      change: "+12.45%",
+      up: true,
+    },
+    {
+      label: "SOL/USD",
+      value: sol ? `$${fmt(sol.usd)}` : "—",
+      change: sol ? changeLabel(sol.usd_24h_change) : "—",
+      up: sol ? sol.usd_24h_change >= 0 : true,
+    },
+    {
+      label: "BTC/USD",
+      value: btc ? `$${fmt(btc.usd)}` : "—",
+      change: btc ? changeLabel(btc.usd_24h_change) : "—",
+      up: btc ? btc.usd_24h_change >= 0 : false,
+    },
+    {
+      label: "ETH/USD",
+      value: eth ? `$${fmt(eth.usd)}` : "—",
+      change: eth ? changeLabel(eth.usd_24h_change) : "—",
+      up: eth ? eth.usd_24h_change >= 0 : true,
+    },
+    { label: `${TOKEN_SYMBOL} Holders`, value: "2,847",  change: "+124 today", up: true },
+    { label: "24h Volume",             value: "$824K",   change: "+31%",       up: true },
+    { label: "Liquidity",              value: "$412K",   change: "Locked",     up: true },
+    { label: "Market Cap",             value: "$4.2M",   change: "+15%",       up: true },
+  ];
+
+  const DOUBLED = [...ITEMS, ...ITEMS];
+
   return (
     <div className="overflow-hidden border-b border-white/5 bg-white/[0.015] py-2">
       <div className="flex animate-marquee whitespace-nowrap">

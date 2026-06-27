@@ -93,8 +93,22 @@ function StatCard({ icon, label, value, sub, up, accentClass, delay = 0 }: CardP
   );
 }
 
+function SkeletonCard() {
+  return (
+    <div className="glass-card rounded-2xl p-4">
+      <div className="mb-3 flex items-center justify-between">
+        <div className="skeleton h-9 w-9 rounded-xl" />
+        <div className="skeleton h-5 w-16 rounded-full" />
+      </div>
+      <div className="skeleton mb-1 h-3 w-20 rounded" />
+      <div className="skeleton h-7 w-28 rounded" />
+    </div>
+  );
+}
+
 export default function TokenStats() {
   const [stats, setStats] = useState<TokenStatsData>(MOCK);
+  const [mounted, setMounted] = useState(false);
 
   const load = async () => {
     if (isMockMint) return;
@@ -103,10 +117,19 @@ export default function TokenStats() {
   };
 
   useEffect(() => {
+    setMounted(true);
     load();
     const t = setInterval(load, 30_000);
     return () => clearInterval(t);
   }, []);
+
+  if (!mounted) {
+    return (
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        {[0, 1, 2, 3].map(i => <SkeletonCard key={i} />)}
+      </div>
+    );
+  }
 
   const up = stats.priceChange24h >= 0;
   const changeLabel = `${up ? "+" : ""}${stats.priceChange24h.toFixed(2)}%`;

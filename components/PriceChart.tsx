@@ -25,13 +25,42 @@ const VOLUME: Record<Period, number[]> = {
   "1M": [15,30,20,40,25,45,35,50,30,55,40,60,45,65,50,70,55,72,60,75,65,78,70,82,75,85,80,88,90,100],
 };
 
-const TIME_LABELS: Record<Period, string[]> = {
-  "1H": ["10:00","10:10","10:20","10:30","10:40","10:50"],
-  "4H": ["08:00","09:00","10:00","11:00","12:00","13:00"],
-  "1D": ["Mon","Tue","Wed","Thu","Fri","Sat"],
-  "1W": ["Wk1","Wk2","Wk3","Wk4","Wk5","Wk6"],
-  "1M": ["Jan","Feb","Mar","Apr","May","Jun"],
-};
+function getTimeLabels(period: Period): string[] {
+  const now = new Date();
+  const pad = (n: number) => String(n).padStart(2, "0");
+  const DAYS = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+  if (period === "1H") {
+    return Array.from({ length: 6 }, (_, i) => {
+      const d = new Date(now.getTime() - (5 - i) * 10 * 60 * 1000);
+      return `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    });
+  }
+  if (period === "4H") {
+    return Array.from({ length: 5 }, (_, i) => {
+      const d = new Date(now.getTime() - (4 - i) * 60 * 60 * 1000);
+      return `${pad(d.getHours())}:00`;
+    });
+  }
+  if (period === "1D") {
+    return Array.from({ length: 6 }, (_, i) => {
+      const d = new Date(now.getTime() - (5 - i) * 24 * 60 * 60 * 1000);
+      return DAYS[d.getDay()];
+    });
+  }
+  if (period === "1W") {
+    return Array.from({ length: 6 }, (_, i) => {
+      const d = new Date(now.getTime() - (5 - i) * 7 * 24 * 60 * 60 * 1000);
+      return `${MONTHS[d.getMonth()]} ${d.getDate()}`;
+    });
+  }
+  // 1M
+  return Array.from({ length: 6 }, (_, i) => {
+    const d = new Date(now.getFullYear(), now.getMonth() - (5 - i), 1);
+    return MONTHS[d.getMonth()];
+  });
+}
 
 const PRICE_LABELS: Record<Period, string[]> = {
   "1H": ["$0.0000390","$0.0000400","$0.0000410","$0.0000420"],
@@ -173,10 +202,11 @@ export default function PriceChart() {
           })}
 
           {/* Time labels */}
-          {TIME_LABELS[period].map((label, i) => {
-            const x = (i / (TIME_LABELS[period].length - 1)) * W;
+          {getTimeLabels(period).map((label, i) => {
+            const labels = getTimeLabels(period);
+            const x = (i / (labels.length - 1)) * W;
             return (
-              <text key={i} x={x} y={H + VH + 28} textAnchor="middle" fill="#475569" fontSize="9" fontFamily="sans-serif">
+              <text key={i} x={x} y={H + VH + 28} textAnchor="middle" fill="#475569" fontSize="9" fontFamily="sans-serif" style={{ userSelect: "none" }}>
                 {label}
               </text>
             );
