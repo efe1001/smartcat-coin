@@ -3,6 +3,7 @@ import MarqueeBar from "@/components/MarqueeBar";
 import TokenStats from "@/components/TokenStats";
 import PriceChart from "@/components/PriceChart";
 import SwapCard from "@/components/SwapCard";
+import ContractAddress from "@/components/ContractAddress";
 import { TOKEN_NAME, TOKEN_SYMBOL } from "@/lib/constants";
 
 export default function HomePage() {
@@ -27,6 +28,7 @@ export default function HomePage() {
             Buy and sell <span className="font-semibold text-orange-400">${TOKEN_SYMBOL}</span> instantly.
             Best price across all Solana DEXes via Jupiter aggregation.
           </p>
+          <ContractAddress />
         </section>
 
         {/* Stats */}
