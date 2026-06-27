@@ -1,4 +1,5 @@
 export const TOKEN_MINT = process.env.NEXT_PUBLIC_TOKEN_MINT ?? "";
+export const IS_MOCK_MODE = process.env.NEXT_PUBLIC_MOCK_MODE === "true" || !TOKEN_MINT || TOKEN_MINT.startsWith("PASTE");
 export const TOKEN_SYMBOL = process.env.NEXT_PUBLIC_TOKEN_SYMBOL ?? "SMCAT";
 export const TOKEN_NAME = process.env.NEXT_PUBLIC_TOKEN_NAME ?? "Smartcat Coin";
 export const RPC_URL =

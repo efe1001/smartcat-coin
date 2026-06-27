@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { TOKEN_MINT, TOKEN_SYMBOL } from "@/lib/constants";
 
-const isMockMint = !TOKEN_MINT || TOKEN_MINT.startsWith("PASTE");
+const isMockMint = !TOKEN_MINT || TOKEN_MINT.startsWith("PASTE") || TOKEN_MINT.length < 32;
 const DISPLAY = isMockMint
   ? "TBA — Coming Soon"
   : `${TOKEN_MINT.slice(0, 8)}...${TOKEN_MINT.slice(-8)}`;

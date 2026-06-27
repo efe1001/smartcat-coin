@@ -4,9 +4,9 @@ import { useState, useEffect, useCallback } from "react";
 import { useMockWallet } from "@/components/MockWalletProvider";
 import Toast, { useToast } from "@/components/Toast";
 import { getQuote, formatTokenAmount, QuoteResponse } from "@/lib/jupiter";
-import { SOL_MINT, TOKEN_MINT, TOKEN_SYMBOL, DEFAULT_SLIPPAGE_BPS } from "@/lib/constants";
+import { SOL_MINT, TOKEN_MINT, TOKEN_SYMBOL, DEFAULT_SLIPPAGE_BPS, IS_MOCK_MODE } from "@/lib/constants";
 
-const isMockMint = !TOKEN_MINT || TOKEN_MINT.startsWith("PASTE");
+const isMockMint = IS_MOCK_MODE;
 const MOCK_RATE = 24_500; // SMCAT per SOL
 
 function buildMockQuote(inputMint: string, outputMint: string, sol: number, slippageBps: number): QuoteResponse {

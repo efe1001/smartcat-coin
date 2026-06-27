@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { TOKEN_MINT, TOKEN_SYMBOL } from "@/lib/constants";
+import { TOKEN_MINT, TOKEN_SYMBOL, IS_MOCK_MODE } from "@/lib/constants";
 
-const isMockMint = !TOKEN_MINT || TOKEN_MINT.startsWith("PASTE");
+const isMockMint = IS_MOCK_MODE;
 
 const PERIODS = ["1H", "4H", "1D", "1W", "1M"] as const;
 type Period = typeof PERIODS[number];

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import type { TokenStats as TokenStatsData } from "@/lib/dexscreener";
 import { fetchTokenStats, formatUsd } from "@/lib/dexscreener";
-import { TOKEN_MINT, TOKEN_SYMBOL } from "@/lib/constants";
+import { TOKEN_MINT, TOKEN_SYMBOL, IS_MOCK_MODE } from "@/lib/constants";
 
 const MOCK: TokenStatsData = {
   priceUsd: "0.00004200",
@@ -14,7 +14,7 @@ const MOCK: TokenStatsData = {
   pairAddress: "",
 };
 
-const isMockMint = !TOKEN_MINT || TOKEN_MINT.startsWith("PASTE");
+const isMockMint = IS_MOCK_MODE;
 
 function TrendIcon({ up }: { up: boolean }) {
   return up ? (
