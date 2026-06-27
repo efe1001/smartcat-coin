@@ -4,6 +4,7 @@ import TokenStats from "@/components/TokenStats";
 import PriceChart from "@/components/PriceChart";
 import SwapCard from "@/components/SwapCard";
 import ContractAddress from "@/components/ContractAddress";
+import AirdropSection from "@/components/AirdropSection";
 import { TOKEN_NAME, TOKEN_SYMBOL } from "@/lib/constants";
 
 export default function HomePage() {
@@ -74,6 +75,9 @@ export default function HomePage() {
             </div>
           ))}
         </section>
+
+        {/* Airdrop */}
+        <AirdropSection />
 
         {/* How to buy */}
         <section className="mt-6 glass-card rounded-2xl p-6">
